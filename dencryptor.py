@@ -4,7 +4,8 @@
 
 def binlist(prm_bin):
 	if type(prm_bin)!=str:
-		raise TypeError("Argument should be a string. Given : {}.".format(type(prm_bin)))
+		message = "Argument should be a string. Given : {}.".format(type(prm_bin))
+		raise TypeError(message)
 	binlist = [ ]
 	a = 0
 	z = 8
@@ -27,6 +28,7 @@ def bin2txt(given_bin):
 	if type(given_bin)!=str:
 		raise TypeError("Argument should be a string. Given : {}.".format(type(given_bin)))
 	txtlist = [ ]
+	given_bin = given_bin.replace(" ", "")
 	binarray = binlist(given_bin)
 	for Byte in binarray:
 		character = chr(int(Byte, 2))#chr()
@@ -34,13 +36,13 @@ def bin2txt(given_bin):
 		del character
 	decrypted_bin = ''.join(txtlist)
 	del txtlist
-	#print('Code decrypted successfully :\n\t', end="")
 	return decrypted_bin
 
 def txt2bin(string):
 	if type(string)!=str:
 		raise TypeError("Argument should be a string. Given : {}.".format(type(string)))
 	from binascii import hexlify
+	string = string.replace(" ", "")
 	result = bin(int(hexlify(string.encode()), 16))
 	result = '0' + result[2:]
 	return result
@@ -53,7 +55,6 @@ def hex2txt(given_hex):
 	byted_hex = given_hex.encode()
 	byted_str = unhexlify(byted_hex)
 	string = str(byted_str, 'ascii')
-	
 	return string
 
 def txt2hex(string, py_syntax=False):
@@ -72,27 +73,8 @@ def txt2hex(string, py_syntax=False):
 			i+=2
 		stringed_hex = "".join(hex_list)
 	return stringed_hex
-#	x=binascii.hexlify(x) # byted str to byted hex
-#	y=str(x,'ascii') # byted hex to stringed hex
-#	x=binascii.unhexlify(x) # byted hex to byted str
-#	y=str(x,'ascii') # byted str to str
 
-if __name__=="__main__":
-	choice = int(input("What do you want to do ?\n\n1. Decrypt binary to text\n2. Encrypt text to binary\n3. Decrypt hex to text\n4. Encrypt text to hex\n> "))
-	if choice==1:
-		user_input = input("Running bin to text decryptor \nEnter your binary code :\n> ")
-		if user_input:
-			print(bin2txt(user_input))
-	elif choice==2:
-		user_input = input("Running text to bin encryptor \nEnter your text :\n> ")
-		if user_input:
-			print(txt2bin(user_input))
-	elif choice==3:
-		user_input = input("Running hex to text decryptor. \nEnter your hexadecimal(hex) code :\n> ")
-		if user_input:
-			print(hex2txt(user_input))
-	elif choice==4:
-		user_input = input("Running text to hex decryptor. \nEnter your text :\n> ")
-		if user_input:
-			print(txt2hex(user_input))
-	input("Press Enter to exit...")
+def bin2hex(user_bin, py_syntax=False):
+	return txt2hex(bin2txt(bin_code), py_syntax=py_syntax)
+def hex2bin(user_hex):
+	return txt2bin(hex2txt(user_hex))
